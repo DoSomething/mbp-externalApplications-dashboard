@@ -1,4 +1,4 @@
-A producer to generate calls to external applications based on Message Broker events.
+Producer application for the external application Lobby Dashboard. The user registration, campaign signup and report back activities will be POSEDed to the application enpoint to inform the application of the events.
 
 #### Applications that use this producer:
 - Lobby Dashboard
