@@ -3,7 +3,7 @@
  * mbc-user-subscriptions.php
  *
  * Consume queue entries in ?? Queue to process messages from MailChimp webhooks
- * triggered by user unsubscriptions.
+ * triggered by user subscriptions.
  */
 
 // Load up the Composer autoload magic
@@ -26,8 +26,7 @@ $credentials = array(
 $settings = array(
   'stathat_ez_key' => getenv("STATHAT_EZKEY"),
   'use_stathat_tracking' => getenv('USE_STAT_TRACKING'),
-  'ds_user_api_host' => getenv('DS_USER_API_HOST'),
-  'ds_user_api_port' => getenv('DS_USER_API_PORT'),
+  'ds_lobby_dashboard_host' => getenv('DS_LOBBY_DASHBOARD_HOST'),
 );
 
 $config = array();
@@ -42,14 +41,16 @@ $config['exchange'] = array(
   'durable' => $transactionalExchange->durable,
   'auto_delete' => $transactionalExchange->auto_delete,
 );
-$config['queue'][] = array(
-  'name' => $transactionalExchange->queues->activityStatsQueue->name,
-  'passive' => $transactionalExchange->queues->activityStatsQueue->passive,
-  'durable' => $transactionalExchange->queues->activityStatsQueue->durable,
-  'exclusive' => $transactionalExchange->queues->activityStatsQueue->exclusive,
-  'auto_delete' => $transactionalExchange->queues->activityStatsQueue->auto_delete,
-  'bindingKey' => $transactionalExchange->queues->activityStatsQueue->binding_key,
-);
+foreach($transactionalExchange->queues->activityStatsQueue->binding_patterns as $bindingPattern) {
+  $config['queue'][] = array(
+   'name' => $transactionalExchange->queues->activityStatsQueue->name,
+   'passive' => $transactionalExchange->queues->activityStatsQueue->passive,
+   'durable' => $transactionalExchange->queues->activityStatsQueue->durable,
+   'exclusive' => $transactionalExchange->queues->activityStatsQueue->exclusive,
+   'auto_delete' => $transactionalExchange->queues->activityStatsQueue->auto_delete,
+   'bindingKey' => $bindingPattern,
+ );
+}
 
 
 echo '------- mbp-externalApplications-dashboard START: ' . date('D M j G:i:s T Y') . ' -------', PHP_EOL;
