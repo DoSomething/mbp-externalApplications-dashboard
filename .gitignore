@@ -1,0 +1,27 @@
+# Ignore configuration files that may contain sensitive information.
+messagebroker-config
+mb-secure-config.inc
+
+# Ignore composer working files
+composer.phar
+composer.lock
+/vendor/
+
+# Ignore log files
+*.log
+
+# Ignore testing working files
+tests/phpunit.xml
+public/vendor
+
+# Ignore config settings with sensative account creds
+config.inc
+
+# Ignore OSX system files
+.DS_Store
+
+# Ignore packages installed by npm
+node_modules
+
+# Ignore bower
+bower_components
